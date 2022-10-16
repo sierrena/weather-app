@@ -1,0 +1,58 @@
+<template>
+  <div>
+    <video class="" ref="video" @canplay="initCanvas()">
+      Stream Unavailable
+    </video>
+    <b-button type="is-primary" @click="takePicture()">Snap! </b-button>
+    <canvas ref="canvas" style="display: none"></canvas>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "CameraSnap",
+  mounted() {
+    this.canvas = this.$refs.canvas;
+    this.video = this.$refs.video;
+    this.startCapture();
+  },
+  methods: {
+    startCapture() {
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: false })
+        .then((stream) => {
+          this.video.srcObject = stream;
+          this.video.play();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    takePicture() {
+      console.log(this.video);
+      let context = this.canvas.getContext("2d");
+      context.drawImage(
+        this.video,
+        0,
+        0,
+        this.video.videoWidth,
+        this.video.videoHeigth
+      );
+      this.$emit("picture-taken", this.canvas.toDataURL("image/png"));
+      console.log(this.canvas.toDataURL("image/jpeg"));
+    },
+    initCanvas() {
+      this.canvas.setAttribute("width", this.video.videoWidth);
+      this.canvas.setAttribute("height", this.video.videoHeigth);
+    },
+  },
+  data() {
+    return {
+      video: null,
+      canvas: null,
+    };
+  },
+};
+</script>
+
+<style lang="scss" scoped></style>

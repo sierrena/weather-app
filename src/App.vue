@@ -1,19 +1,27 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="d-flex justify-content-center" id="app">
+    <CameraSnap @picture-taken="imageSrc = $event" />
+    <UserForm />
+    <img :src="imageSrc" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CameraSnap from "./components/CameraSnap.vue";
+import UserForm from "./components/UserForm.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    CameraSnap,
+    UserForm,
+  },
+  data() {
+    return {
+      imageSrc: null,
+    };
+  },
+};
 </script>
 
 <style>
