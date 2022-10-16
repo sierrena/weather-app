@@ -36,14 +36,15 @@ export default {
         0,
         0,
         this.video.videoWidth,
-        this.video.videoHeigth
+        this.video.videoHeight
       );
       this.$emit("picture-taken", this.canvas.toDataURL("image/png"));
       console.log(this.canvas.toDataURL("image/jpeg"));
+      console.log(this.video.videoHeight, this.video.videoWidth);
     },
     initCanvas() {
       this.canvas.setAttribute("width", this.video.videoWidth);
-      this.canvas.setAttribute("height", this.video.videoHeigth);
+      this.canvas.setAttribute("height", this.video.videoHeight);
     },
   },
   data() {
