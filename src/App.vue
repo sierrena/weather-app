@@ -1,24 +1,97 @@
 <template>
   <div class="d-flex justify-content-center" id="app">
-    <CameraSnap @picture-taken="imageSrc = $event" />
-    <UserForm />
+    <CameraSnap
+      v-if="this.state === 1"
+      @picture-taken="
+        setState();
+        fetchWeather();
+        imageSrc = $event;
+      "
+    />
+
+    <UserForm
+      v-if="this.state === 0"
+      @submitted="
+        setProps($event);
+        setState();
+        fetchLocation();
+      "
+    />
     <img :src="imageSrc" />
+    <Table />
   </div>
 </template>
 
 <script>
 import CameraSnap from "./components/CameraSnap.vue";
 import UserForm from "./components/UserForm.vue";
+import Table from "./components/Table.vue";
 
 export default {
   name: "App",
   components: {
     CameraSnap,
     UserForm,
+    Table,
+  },
+  methods: {
+    setState() {
+      this.state++;
+      console.log(this.city, this.name, this.state);
+      console.log(this.dailyWeather, this.weather);
+    },
+    setProps(props) {
+      this.name = props.name;
+      this.city = props.city;
+      console.log(this.city, this.name, this.state);
+    },
+    fetchLocation() {
+      if (this.state === 1) {
+        fetch(
+          `http://api.openweathermap.org/geo/1.0/direct?q=${this.city}&appid=30a97f591964e0ca08c7bf10847c4f07`
+        )
+          .then((res) => {
+            return res.json();
+          })
+          .then(this.setGeoResult);
+      }
+    },
+    fetchWeather() {
+      if (this.state === 2) {
+        fetch(
+          `http://api.openweathermap.org/data/2.5/forecast?lat=${this.location.lat}&lon=${this.location.lon}&appid=30a97f591964e0ca08c7bf10847c4f07&units=metric`
+        )
+          .then((res) => {
+            return res.json();
+          })
+          .then((res) => {
+            this.setWeatherResult(res);
+          });
+      }
+    },
+    setGeoResult(result) {
+      this.location = JSON.parse(JSON.stringify(result[0]));
+      console.log(this.location);
+    },
+    setWeatherResult(result) {
+      console.log(result);
+      this.weather = result;
+      console.log(this.weather.list);
+      for (let i = 0; i < this.weather.list.length; i = i + 8) {
+        this.dailyWeather.push(this.weather.list[i]);
+      }
+      console.log(this.dailyWeather);
+    },
   },
   data() {
     return {
       imageSrc: null,
+      state: 0,
+      name: "",
+      city: "",
+      location: {},
+      weather: {},
+      dailyWeather: [],
     };
   },
 };

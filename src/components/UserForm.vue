@@ -6,14 +6,16 @@
     <b-field label="City">
       <b-input v-model="city"></b-input>
     </b-field>
-    <b-button type="is-primary">Submit </b-button>
+    <b-button type="is-primary" @click="onClick()">Submit </b-button>
   </div>
 </template>
 
 <script>
 export default {
   methods: {
-    onClick() {},
+    onClick() {
+      this.$emit("submitted", { name: `${this.name}`, city: `${this.city}` });
+    },
   },
   data() {
     return {

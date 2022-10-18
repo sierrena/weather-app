@@ -29,7 +29,6 @@ export default {
         });
     },
     takePicture() {
-      console.log(this.video);
       let context = this.canvas.getContext("2d");
       context.drawImage(
         this.video,
@@ -39,8 +38,6 @@ export default {
         this.video.videoHeight
       );
       this.$emit("picture-taken", this.canvas.toDataURL("image/png"));
-      console.log(this.canvas.toDataURL("image/jpeg"));
-      console.log(this.video.videoHeight, this.video.videoWidth);
     },
     initCanvas() {
       this.canvas.setAttribute("width", this.video.videoWidth);
