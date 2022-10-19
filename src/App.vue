@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-center" id="app">
     <CameraSnap
-      v-if="this.state === 1"
+      v-if="state === 1"
       @picture-taken="
         setState();
         fetchWeather();
@@ -10,7 +10,7 @@
     />
 
     <UserForm
-      v-if="this.state === 0"
+      v-if="state === 0"
       @submitted="
         setProps($event);
         setState();
@@ -18,7 +18,9 @@
       "
     />
     <img :src="imageSrc" />
-    <Table />
+    <p v-if="state === 2">{{ name }}</p>
+    <p v-if="state === 2">{{ city }}</p>
+    <Table v-if="state === 2" :data="dailyWeather" />
   </div>
 </template>
 
