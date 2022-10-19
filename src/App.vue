@@ -60,13 +60,10 @@ export default {
     },
     setState() {
       this.state++;
-      console.log(this.city, this.name, this.state);
-      console.log(this.dailyWeather, this.weather);
     },
     setProps(props) {
       this.name = props.name;
       this.city = props.city;
-      console.log(this.city, this.name, this.state);
     },
     fetchLocation() {
       if (this.state === 1) {
@@ -106,17 +103,13 @@ export default {
     },
     setGeoResult(result) {
       this.location = JSON.parse(JSON.stringify(result[0]));
-      console.log(this.location);
     },
     setWeatherResult(result) {
-      console.log(result);
       this.weather = result;
-      console.log(this.weather.list);
       this.dailyWeather = [];
       for (let i = 0; i < this.weather.list.length; i = i + 8) {
         this.dailyWeather.push(this.weather.list[i]);
       }
-      console.log(this.dailyWeather);
     },
   },
   data() {
