@@ -9,7 +9,7 @@
       "
       :columns="columns"
       :hoverable="true"
-      :sortable="true"
+      sortable
       centered
     ></b-table>
   </div>

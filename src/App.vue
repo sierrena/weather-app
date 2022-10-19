@@ -18,8 +18,11 @@
     />
 
     <img v-if="state === 2" class="rounded-5" :src="imageSrc" />
-    <p v-if="state === 2">{{ name }}</p>
-    <p v-if="state === 2">{{ city }}</p>
+    <div class="d-flex justify-content-around m-3">
+      <p class="h3" v-if="state === 2">{{ name }}</p>
+      <p class="h3" v-if="state === 2">{{ city }}</p>
+    </div>
+
     <Table v-if="state === 2" :data="dailyWeather" />
     <b-button
       class="m-5"
@@ -48,6 +51,12 @@ export default {
     Table,
   },
   methods: {
+    toast() {
+      this.$buefy.toast.open({
+        type: "is-danger",
+        message: "Request Failed!",
+      });
+    },
     setState() {
       this.state++;
       console.log(this.city, this.name, this.state);
@@ -66,7 +75,11 @@ export default {
           .then((res) => {
             return res.json();
           })
-          .then(this.setGeoResult);
+          .then(this.setGeoResult)
+          .catch((error) => {
+            console.error(error);
+            this.toast();
+          });
       }
     },
     fetchWeather() {
@@ -79,6 +92,10 @@ export default {
           })
           .then((res) => {
             this.setWeatherResult(res);
+          })
+          .catch((error) => {
+            console.error(error);
+            this.toast();
           });
       }
     },
