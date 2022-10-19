@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-flex justify-content-center">
     <b-table
       :data="
         data?.map((dw) => {
@@ -9,6 +9,8 @@
       "
       :columns="columns"
       :hoverable="true"
+      :sortable="true"
+      centered
     ></b-table>
   </div>
 </template>

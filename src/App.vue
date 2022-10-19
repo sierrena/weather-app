@@ -1,5 +1,13 @@
 <template>
-  <div class="d-flex justify-content-center" id="app">
+  <div class="container-sm col-sm-4" id="app">
+    <UserForm
+      v-if="state === 0"
+      @submitted="
+        setProps($event);
+        setState();
+        fetchLocation();
+      "
+    />
     <CameraSnap
       v-if="state === 1"
       @picture-taken="
@@ -9,18 +17,21 @@
       "
     />
 
-    <UserForm
-      v-if="state === 0"
-      @submitted="
-        setProps($event);
-        setState();
-        fetchLocation();
-      "
-    />
-    <img :src="imageSrc" />
+    <img v-if="state === 2" class="rounded-5" :src="imageSrc" />
     <p v-if="state === 2">{{ name }}</p>
     <p v-if="state === 2">{{ city }}</p>
     <Table v-if="state === 2" :data="dailyWeather" />
+    <b-button
+      class="m-5"
+      v-if="state === 2"
+      type="is-primary"
+      @click="
+        () => {
+          this.state = 0;
+        }
+      "
+      >Restart
+    </b-button>
   </div>
 </template>
 

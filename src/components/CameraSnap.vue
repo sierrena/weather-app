@@ -1,9 +1,12 @@
 <template>
-  <div>
-    <video class="" ref="video" @canplay="initCanvas()">
-      Stream Unavailable
-    </video>
-    <b-button type="is-primary" @click="takePicture()">Snap! </b-button>
+  <div class="container-sm gap-10">
+    <div class="row">
+      <video ref="video" @canplay="initCanvas()">Stream Unavailable</video>
+    </div>
+    <div class="row m-4">
+      <b-button type="is-primary" @click="takePicture()">Snap! </b-button>
+    </div>
+
     <canvas ref="canvas" style="display: none"></canvas>
   </div>
 </template>
