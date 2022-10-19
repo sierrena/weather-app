@@ -51,10 +51,11 @@ export default {
     Table,
   },
   methods: {
-    toast() {
-      this.$buefy.toast.open({
+    errorPopup() {
+      this.$buefy.snackbar.open({
+        message: "Request Failed",
         type: "is-danger",
-        message: "Request Failed!",
+        position: "is-bottom-left",
       });
     },
     setState() {
@@ -72,13 +73,15 @@ export default {
         fetch(
           `http://api.openweathermap.org/geo/1.0/direct?q=${this.city}&appid=30a97f591964e0ca08c7bf10847c4f07`
         )
-          .then((res) => {
-            return res.json();
+          .then((response) => {
+            if (!response.ok) {
+              this.errorPopup();
+            } else return response.json();
           })
           .then(this.setGeoResult)
           .catch((error) => {
             console.error(error);
-            this.toast();
+            this.errorPopup();
           });
       }
     },
@@ -87,15 +90,17 @@ export default {
         fetch(
           `http://api.openweathermap.org/data/2.5/forecast?lat=${this.location.lat}&lon=${this.location.lon}&appid=30a97f591964e0ca08c7bf10847c4f07&units=metric`
         )
-          .then((res) => {
-            return res.json();
+          .then((response) => {
+            if (!response.ok) {
+              this.errorPopup();
+            } else return response.json();
           })
           .then((res) => {
             this.setWeatherResult(res);
           })
           .catch((error) => {
             console.error(error);
-            this.toast();
+            this.errorPopup();
           });
       }
     },
@@ -107,6 +112,7 @@ export default {
       console.log(result);
       this.weather = result;
       console.log(this.weather.list);
+      this.dailyWeather = [];
       for (let i = 0; i < this.weather.list.length; i = i + 8) {
         this.dailyWeather.push(this.weather.list[i]);
       }
